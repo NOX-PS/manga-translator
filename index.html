@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 Manga Translator</title>
+
+    <!-- Telegram WebApp Support -->
+    <meta name="telegram-web-app-capable" content="yes">
+
+    <!-- SEO (اختیاری ولی حرفه‌ای) -->
+    <meta name="description" content="ترجمه مانگا و مانهوا با OCR مستقیم روی دستگاه شما">
+    <meta name="keywords" content="Manga Translator, OCR, Manhwa, ترجمه مانگا">
+</head>
+
+<script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+<script src="https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
+<script src="script.js"></script>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+    <header>
+        <h1>📖 مترجم مانگا / مانهوا</h1>
+        <p>
+            ترجمه‌ی دقیق مانگا
+        </p>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+    <main>
+
+        <!-- Upload Section -->
+        <section id="upload-section">
+            <h2>📂 آپلود فایل</h2>
+            <p>فایل PDF مانگا یا مانهوا را انتخاب کنید</p>
+
+            <input 
+                type="file"
+                id="pdfInput"
+                accept="application/pdf"
+            >
+
+            <p>
+                ⛔ پردازش روی دستگاه شما انجام می‌شود  
+                ⛔ هیچ فایلی ذخیره نمی‌شود
+            </p>
+        </section>
+
+        <!-- Controls -->
+        <section id="control-section">
+            <button id="startBtn">
+                ▶️ شروع پردازش
+            </button>
+
+            <button id="clearBtn">
+                🗑️ پاک‌سازی
+            </button>
+        </section>
+
+        <!-- Status -->
+        <section id="status-section">
+            <p id="statusText">
+                📌 منتظر انتخاب فایل...
+            </p>
+        </section>
+
+        <!-- Viewer -->
+        <section id="viewer-section">
+            <h2>📄 صفحات</h2>
+
+            <!-- Pages will be injected here -->
+            <div id="viewer"></div>
+        </section>
+
+        <!-- Export -->
+        <section id="export-section">
+            <h2>📤 خروجی</h2>
+
+            <button id="exportPdfBtn">
+                📥 دانلود PDF ترجمه‌شده
+            </button>
+        </section>
+
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p>
+            ساخته شده توسط تیم
+               Otaku Heaven
+        </p>
+        <p>
+            Telegram : https://t.me/DownloadAnimeAI
+        </p>
+    </footer>
+
+</body>
+</html>
