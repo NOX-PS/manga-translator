@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<link rel="stylesheet" href="style.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,24 +8,223 @@
     <!-- Telegram WebApp Support -->
     <meta name="telegram-web-app-capable" content="yes">
 
-    <!-- SEO (اختیاری ولی حرفه‌ای) -->
     <meta name="description" content="ترجمه مانگا و مانهوا با OCR مستقیم روی دستگاه شما">
     <meta name="keywords" content="Manga Translator, OCR, Manhwa, ترجمه مانگا">
+
+    <!-- Styles (embedded so you won't get 404) -->
+    <style>
+    /* ===============================
+       Global Reset & Base
+    ================================ */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Vazirmatn", "Segoe UI", sans-serif;
+    }
+
+    body {
+        background: radial-gradient(circle at top, #1a1a1f, #0d0d11);
+        color: #f2f2f2;
+        min-height: 100vh;
+        line-height: 1.8;
+        padding: 12px;
+    }
+
+    /* ===============================
+       Header
+    ================================ */
+    header {
+        text-align: center;
+        padding: 24px 12px;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #ff4ecd, #7aa2ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+        margin-top: 8px;
+        color: #b5b5c9;
+        font-size: 0.95rem;
+    }
+
+    /* ===============================
+       Main Layout
+    ================================ */
+    main {
+        max-width: 900px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* ===============================
+       Sections (Card Style)
+    ================================ */
+    section {
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 18px;
+        padding: 18px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+    }
+
+    section h2 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+        color: #ffffff;
+    }
+
+    /* ===============================
+       Upload
+    ================================ */
+    #upload-section p {
+        font-size: 0.9rem;
+        color: #c7c7da;
+    }
+
+    input[type="file"] {
+        margin-top: 12px;
+        width: 100%;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px dashed #5f6cff;
+        background: rgba(0, 0, 0, 0.4);
+        color: #eaeaff;
+        cursor: pointer;
+    }
+
+    /* ===============================
+       Buttons
+    ================================ */
+    button {
+        width: 100%;
+        padding: 14px;
+        border-radius: 16px;
+        border: none;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+
+    #control-section {
+        display: flex;
+        gap: 12px;
+    }
+
+    #startBtn {
+        background: linear-gradient(135deg, #7a5cff, #4dafff);
+        color: #fff;
+    }
+
+    #startBtn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(90, 120, 255, 0.5);
+    }
+
+    #clearBtn {
+        background: #2b2b35;
+        color: #ddd;
+    }
+
+    #clearBtn:hover {
+        background: #3a3a48;
+    }
+
+    #exportPdfBtn {
+        background: linear-gradient(135deg, #ff4ecd, #ff7a7a);
+        color: #fff;
+    }
+
+    #exportPdfBtn:hover {
+        transform: scale(1.02);
+    }
+
+    /* ===============================
+       Status
+    ================================ */
+    #statusText {
+        font-size: 0.9rem;
+        color: #9aa0ff;
+        text-align: center;
+    }
+
+    /* ===============================
+       Viewer
+    ================================ */
+    #viewer {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .page-card {
+        background: #111118;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+    }
+
+    .page-card img {
+        width: 100%;
+        display: block;
+    }
+
+    .translation-box {
+        padding: 14px;
+        background: #181824;
+        border-top: 1px solid #2a2a40;
+        font-size: 0.9rem;
+        color: #eaeaff;
+        white-space: pre-wrap;
+    }
+
+    /* ===============================
+       Footer
+    ================================ */
+    footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-bottom: 20px;
+        font-size: 0.8rem;
+        color: #8a8aa8;
+    }
+
+    /* ===============================
+       Responsive
+    ================================ */
+    @media (max-width: 600px) {
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        section {
+            padding: 14px;
+        }
+    }
+    </style>
+
+    <!-- External libs (use exact versions to avoid surprises) -->
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"></script>
+    <script src="https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
-
-<script src="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
-<script src="https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
-<script src="script.js"></script>
-
-
 <body>
 
     <!-- ================= HEADER ================= -->
     <header>
         <h1>📖 مترجم مانگا / مانهوا</h1>
-        <p>
-            ترجمه‌ی دقیق مانگا
-        </p>
+        <p>ترجمه‌ی دقیق مانگا (OCR روی دستگاه شما)</p>
     </header>
 
     <!-- ================= MAIN ================= -->
@@ -43,61 +241,247 @@
                 accept="application/pdf"
             >
 
-            <p>
-                ⛔ پردازش روی دستگاه شما انجام می‌شود  
-                ⛔ هیچ فایلی ذخیره نمی‌شود
-            </p>
+            <p>⛔ پردازش روی دستگاه شما انجام می‌شود — هیچ فایلی ذخیره نمی‌شود</p>
         </section>
 
         <!-- Controls -->
         <section id="control-section">
-            <button id="startBtn">
-                ▶️ شروع پردازش
-            </button>
-
-            <button id="clearBtn">
-                🗑️ پاک‌سازی
-            </button>
+            <button id="startBtn">▶️ شروع پردازش</button>
+            <button id="clearBtn">🗑️ پاک‌سازی</button>
         </section>
 
         <!-- Status -->
         <section id="status-section">
-            <p id="statusText">
-                📌 منتظر انتخاب فایل...
-            </p>
+            <p id="statusText">📌 منتظر انتخاب فایل...</p>
         </section>
 
         <!-- Viewer -->
         <section id="viewer-section">
             <h2>📄 صفحات</h2>
-
-            <!-- Pages will be injected here -->
             <div id="viewer"></div>
         </section>
 
         <!-- Export -->
         <section id="export-section">
             <h2>📤 خروجی</h2>
-
-            <button id="exportPdfBtn">
-                📥 دانلود PDF ترجمه‌شده
-            </button>
+            <button id="exportPdfBtn">📥 دانلود PDF ترجمه‌شده</button>
         </section>
 
     </main>
 
     <!-- ================= FOOTER ================= -->
     <footer>
-        <p>
-            ساخته شده توسط تیم
-               Otaku Heaven
-        </p>
-        <p>
-            Telegram : https://t.me/DownloadAnimeAI
-        </p>
+        <p>ساخته شده توسط تیم Otaku Heaven</p>
+        <p>Telegram : https://t.me/DownloadAnimeAI</p>
     </footer>
+
+
+    <!-- ======= APP SCRIPT (embedded to avoid 404) ======= -->
+    <script>
+    // ensure pdfjs uses the worker we loaded from CDN
+    if (window['pdfjsLib']) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+    }
+
+    // ====== Elements ======
+    const pdfInput = document.getElementById("pdfInput");
+    const startBtn = document.getElementById("startBtn");
+    const clearBtn = document.getElementById("clearBtn");
+    const statusText = document.getElementById("statusText");
+    const viewer = document.getElementById("viewer");
+    const exportPdfBtn = document.getElementById("exportPdfBtn");
+
+    // ====== State ======
+    let pdfFile = null;
+    const translations = []; // keep translations per page
+
+    // ====== Telegram WebApp ======
+    let tg = window.Telegram?.WebApp;
+    if (tg) {
+        try { tg.ready(); tg.expand(); } catch(e){}
+    }
+
+    // ====== Utility ======
+    function escapeHtml(unsafe) {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/\"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+
+    // ====== Events ======
+    pdfInput.addEventListener("change", (e) => {
+        pdfFile = e.target.files[0];
+        if (pdfFile) {
+            statusText.innerText = `📄 فایل انتخاب شد: ${pdfFile.name}`;
+        }
+    });
+
+    clearBtn.addEventListener("click", () => {
+        viewer.innerHTML = "";
+        pdfInput.value = "";
+        pdfFile = null;
+        translations.length = 0;
+        statusText.innerText = "📌 منتظر انتخاب فایل...";
+    });
+
+    startBtn.addEventListener("click", async () => {
+        if (!pdfFile) { alert("اول یه فایل PDF انتخاب کن"); return; }
+        statusText.innerText = "⏳ در حال پردازش PDF...";
+        await processPDF(pdfFile);
+    });
+
+    exportPdfBtn.addEventListener("click", () => {
+        // simple text-only export of translations
+        if (translations.length === 0) { alert('هیچ ترجمه‌ای موجود نیست'); return; }
+        const doc = new jspdf.jsPDF();
+        let y = 20;
+        doc.setFontSize(12);
+        translations.forEach((t, idx) => {
+            const text = `صفحه ${idx+1}:\n${t}\n\n`;
+            const lines = doc.splitTextToSize(text, 170);
+            if (y + lines.length * 8 > 280) { doc.addPage(); y = 20; }
+            doc.text(lines, 20, y);
+            y += lines.length * 8 + 6;
+        });
+        doc.save('translations.pdf');
+    });
+
+    // ====== PDF Processing ======
+    async function processPDF(file) {
+        try {
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            statusText.innerText = `📚 تعداد صفحات: ${pdf.numPages}`;
+
+            for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                statusText.innerText = `📄 پردازش صفحه ${pageNum}...`;
+                const page = await pdf.getPage(pageNum);
+                await renderPage(page, pageNum);
+            }
+
+            statusText.innerText = "✅ پردازش کامل شد";
+        } catch (e) {
+            console.error("processPDF error:", e);
+            statusText.innerText = "❌ خطا در بارگذاری PDF";
+            alert("خطا در پردازش PDF. کنسول را چک کن.");
+        }
+    }
+
+    // ====== Render Page ======
+    async function renderPage(page, pageNumber) {
+        const scale = Math.min(2, (window.devicePixelRatio || 1) * 1.5);
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+
+        const imgData = canvas.toDataURL("image/png");
+
+        const card = document.createElement("div");
+        card.className = "page-card";
+
+        const img = document.createElement("img");
+        img.src = imgData;
+        img.alt = `page-${pageNumber}`;
+
+        const translationBox = document.createElement("div");
+        translationBox.className = "translation-box";
+        translationBox.innerText = "⏳ OCR در حال اجرا...";
+
+        card.appendChild(img);
+        card.appendChild(translationBox);
+        viewer.appendChild(card);
+
+        // OCR
+        const pageTranslation = await runOCR(canvas, translationBox);
+        translations[pageNumber - 1] = pageTranslation || "(بدون متن شناسایی‌شده)";
+    }
+
+    // ====== Translation functions ======
+    async function translateTextLibre(text, target = "fa") {
+        const endpoint = "https://libretranslate.de/translate";
+        const payload = { q: text, source: "auto", target: target, format: "text" };
+        const res = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error("LibreTranslate error " + res.status);
+        const j = await res.json();
+        return j.translatedText;
+    }
+
+    async function translateTextMyMemory(text, src = "en", dest = "fa") {
+        const q = encodeURIComponent(text);
+        const langpair = encodeURIComponent(`${src}|${dest}`);
+        const url = `https://api.mymemory.translated.net/get?q=${q}&langpair=${langpair}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("MyMemory error " + res.status);
+        const j = await res.json();
+        return (j.responseData && j.responseData.translatedText) ? j.responseData.translatedText : "";
+    }
+
+    async function translateText(text) {
+        try { return await translateTextLibre(text, "fa"); }
+        catch (e) {
+            console.warn("LibreTranslate failed, trying MyMemory:", e);
+            try { return await translateTextMyMemory(text, "auto", "fa"); }
+            catch (e2) { console.error("Translation fallback failed:", e2); throw e2; }
+        }
+    }
+
+    // ====== OCR ======
+    async function runOCR(canvas, outputElement) {
+        const worker = Tesseract.createWorker({
+            logger: m => {
+                if (m.status && m.progress != null) {
+                    const pct = Math.round(m.progress * 100);
+                    outputElement.innerText = `🔍 OCR: ${m.status} ${pct}%`;
+                } else if (m.status) {
+                    outputElement.innerText = `🔍 OCR: ${m.status}`;
+                }
+            }
+        });
+
+        try {
+            await worker.load();
+            await worker.loadLanguage("jpn+eng");
+            await worker.initialize("jpn+eng");
+
+            const { data } = await worker.recognize(canvas);
+            const rawText = (data && data.text) ? data.text.trim() : "";
+            if (!rawText) { outputElement.innerText = "❌ متنی شناسایی نشد"; return ""; }
+
+            outputElement.innerHTML = `<div style=\"color:#9aa0ff;margin-bottom:8px;white-space:pre-wrap;\">${escapeHtml(rawText)}</div><div style=\"color:#aaa\">🌐 در حال ترجمه...</div>`;
+
+            let translated = "";
+            try { translated = await translateText(rawText); }
+            catch (e) {
+                console.error("translateText error:", e);
+                outputElement.innerHTML = `<div style=\"color:#9aa0ff;margin-bottom:8px;white-space:pre-wrap;\">${escapeHtml(rawText)}</div><div style=\"color:#ff8a8a\">❌ خطا در ترجمه</div>`;
+                return rawText;
+            }
+
+            outputElement.innerHTML = `\n                <div style=\"color:#9aa0ff;margin-bottom:10px;white-space:pre-wrap;font-size:0.95rem;\">${escapeHtml(rawText)}</div>\n                <div style=\"white-space:pre-wrap;direction:rtl;font-size:1rem;color:#eaeaff;\">${escapeHtml(translated)}</div>\n            `;
+
+            return translated;
+        } catch (err) {
+            console.error("OCR error:", err);
+            outputElement.innerText = "❌ خطا در OCR (کنسول را چک کنید)";
+            return "";
+        } finally {
+            try { await worker.terminate(); } catch (_) {}
+        }
+    }
+    </script>
 
 </body>
 </html>
-
-
